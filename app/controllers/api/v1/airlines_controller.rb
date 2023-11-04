@@ -13,13 +13,30 @@ module Api
         render json: AirlineSerializer.new(airline).serialized_json
       end
 
+      def update 
+        airline = Airline.find_by(slug: params[:slug])
+
+        if airline.update(airline_params)
+          render json: AirlineSerializer.new(airline).serialized_json
+        else
+          render json: {error: airline.errors.messages}, status: 422
+        end
+      end
+
+      def destroy
+        airline = Airline.find_by(slug: params[:slug])
+        if airline.destroy
+          head :no_content
+        else
+          render json: { errors: airline.errors.messages }, status: 422
+
       def create
         airline = Airline.new(airline_params)
 
         if airline.save
           render json: AirlineSerializer.new(airline).serialized_json
         else
-          render json: { error: airline.errors.messages }, status:
+          render json: { error: airline.errors.messages }, status: 422
         end
       end
 
