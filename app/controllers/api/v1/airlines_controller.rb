@@ -29,6 +29,8 @@ module Api
           head :no_content
         else
           render json: { errors: airline.errors.messages }, status: 422
+        end
+      end
 
       def create
         airline = Airline.new(airline_params)
